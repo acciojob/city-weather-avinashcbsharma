@@ -6,7 +6,15 @@ const App = () => {
   const [temprature,setTemprature] = useState(0);
   const [clouds,setClouds] = useState('');
   const [query, setQuery] = useState('');
-  
+  const [timerId, setTimerId] = useState(null);
+
+  const handleInputChange = (e) => {
+    clearTimeout(timerId);
+    const value = e.target.value;
+    const newTimerId = setTimeout(() => setQuery(value), 1000);
+    setTimerId(newTimerId);
+  };
+
   useEffect(()=>{
     let fetchdata = async () => {
       try{
@@ -14,8 +22,8 @@ const App = () => {
         
         setWeatherData(res.data);
         setTemprature(res.data.main.temp);
-        setClouds(res.data.weather[0].description);
-       
+        setClouds(res.data.weather[0]);      
+        console.log("Status", res.status);
       }
       catch(Error){
         console.log("Error in Fetcing: ",Error.message,'\n');
@@ -23,22 +31,24 @@ const App = () => {
     }
     fetchdata();
   },[query]);
-
-  
+    
+  const weatherIcon = `http://openweathermap.org/img/w/${clouds.icon}.png`; 
   let k = parseInt(temprature);
   k = parseInt(( k - 273.15) * 1.8 + 32,0);
-   return (
+   
+  return (
     <div id='container'>
-      <input className='search' placeholder='Enter a city' onChange={(e)=>setQuery(e.target.value)}></input>
-      {weatherData.name &&
+      <input className='search' placeholder='Enter a city' onChange={handleInputChange}></input>
+     
+     { query.length ?
         <div className='weather'>
           <h2>{weatherData.name}</h2>
           <h1>{k} °F</h1>
-          <p><strong>{clouds}</strong></p>         
-        </div>  
+          <p>{clouds.description}</p> 
+          <img src={weatherIcon} alt="Weather icon" /> 
+        </div>  :""
       }
+    
     </div>
   );
 };
-
-export default App;

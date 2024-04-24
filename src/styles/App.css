@@ -1,1 +1,27 @@
 
+body,#root{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#container{
+    width: 80%;
+    text-align: center;
+    padding: 5rem;
+    flex-direction: column;
+    background-color: rgb(225, 214, 214);
+}
+.search{
+    padding:0.9rem;
+    width:80%;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-size: 20px;
+}
+.weather{
+    font-size: 25px;
+}
